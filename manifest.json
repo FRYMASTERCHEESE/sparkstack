@@ -1,0 +1,9 @@
+{
+  "name": "SparkStack",
+  "short_name": "SparkStack",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "description": "Earn practice points and watch a wallet you own. Not a bank."
+}

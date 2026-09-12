@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SparkStack — Earn points. Track your wallet.</title>
+  <meta name="description" content="Learn crypto, earn points from check-ins and offers, track a wallet you own. We never hold your coins." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b1220" />
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div>
+        <p class="eyebrow">Beginner app · not a bank</p>
+        <h1>SparkStack</h1>
+      </div>
+      <div class="points-pill" id="pointsPill">0 pts</div>
+    </header>
+
+    <p class="disclaimer">
+      Points are <strong>not money</strong> and not crypto. Real cash-out needs ad networks later.
+      We never hold your coins. Paste only an address <em>you</em> control.
+    </p>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab on" data-tab="earn">Earn</button>
+      <button class="tab" data-tab="wallet">Wallet</button>
+      <button class="tab" data-tab="learn">Learn</button>
+      <button class="tab" data-tab="help">Help</button>
+    </nav>
+
+    <main>
+      <!-- EARN -->
+      <section id="earn" class="panel on">
+        <article class="card hero">
+          <h2>Daily check-in</h2>
+          <p>Open the app once a day. Streaks add a little extra.</p>
+          <p class="meta" id="streakLabel">Streak: 0 days</p>
+          <button id="checkinBtn" class="btn primary">Check in (+10 pts)</button>
+        </article>
+
+        <article class="card">
+          <h2>Watch a practice ad</h2>
+          <p>This is a <strong>demo</strong>. When you connect Google AdMob later, a real video ad goes here and the network pays <em>you</em>.</p>
+          <button id="adBtn" class="btn">Watch demo ad (+5 pts)</button>
+        </article>
+
+        <article class="card">
+          <h2>Offer wall (AdGate / BitLabs)</h2>
+          <p>Surveys and app installs from big companies. Not connected yet — button shows how it will work.</p>
+          <button id="offerBtn" class="btn">Open offers demo (+25 pts)</button>
+        </article>
+
+        <article class="card muted">
+          <h2>Cash out to crypto</h2>
+          <p>Locked until your ad account actually earns. Then users withdraw to <strong>their</strong> wallet, never yours.</p>
+          <button class="btn" disabled>Coming when ads cover it</button>
+        </article>
+      </section>
+
+      <!-- WALLET -->
+      <section id="wallet" class="panel">
+        <article class="card">
+          <h2>Your watch address</h2>
+          <p>Paste a public address you already own (Bitcoin or Ethereum). We only look. We cannot spend it.</p>
+          <label class="sr" for="addr">Wallet address</label>
+          <input id="addr" type="text" placeholder="bc1… or 0x…" autocomplete="off" />
+          <div class="row">
+            <button id="saveAddr" class="btn primary">Save address</button>
+            <button id="clearAddr" class="btn ghost">Clear</button>
+          </div>
+          <p class="meta" id="addrStatus">No address saved.</p>
+        </article>
+
+        <article class="card">
+          <h2>Market snapshot</h2>
+          <p>Free prices from CoinGecko. Not advice.</p>
+          <ul class="prices" id="prices">
+            <li>Loading…</li>
+          </ul>
+          <button id="refreshPrices" class="btn">Refresh prices</button>
+        </article>
+
+        <article class="card">
+          <h2>Investment note (yours)</h2>
+          <p>Write why you hold. This stays on this phone only.</p>
+          <textarea id="note" rows="4" placeholder="Example: Long-term stack. I only send coins I can afford to leave alone."></textarea>
+          <button id="saveNote" class="btn">Save note</button>
+        </article>
+      </section>
+
+      <!-- LEARN -->
+      <section id="learn" class="panel">
+        <article class="card">
+          <h2>3-minute lessons</h2>
+          <p>Finish a lesson for points. Answers are in the app so you can learn, not guess forever.</p>
+        </article>
+        <div id="lessons"></div>
+      </section>
+
+      <!-- HELP -->
+      <section id="help" class="panel">
+        <article class="card">
+          <h2>You are learning. That is enough.</h2>
+          <ol class="steps">
+            <li>Use this site on your phone browser. Add to Home Screen if you want.</li>
+            <li>Check in daily. Do lessons. Demo ads add points only on this device.</li>
+            <li>Create a real wallet in a trusted app (e.g. a well-known non-custodial wallet). Keep the seed phrase on paper. Never type it here.</li>
+            <li>Paste only the <em>public</em> address into Wallet.</li>
+            <li>When you are ready for Google Play: pay Google US$25 once, I can help you wrap this as an Android app.</li>
+            <li>AdMob / AdGate: make a free publisher account, then we swap the demo buttons for real SDKs.</li>
+          </ol>
+        </article>
+        <article class="card">
+          <h2>Never do these</h2>
+          <ul>
+            <li>Do not send people crypto to “your” personal wallet.</li>
+            <li>Do not promise “free Bitcoin every day.”</li>
+            <li>Do not share seed phrases or private keys with this app or anyone.</li>
+          </ul>
+        </article>
+        <article class="card muted">
+          <p>SparkStack v0.1 · English only · points stored in this browser only.</p>
+          <p><a href="privacy.html" style="color:#6ee7b7">Privacy</a></p>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
