@@ -181,6 +181,18 @@ const LESSONS = [
     answer: 1,
     why: "If someone else holds the coins, they can spend them. SparkStack only watches an address you already own.",
   },
+  {
+    id: "l4",
+    title: "Why cash-out is locked",
+    q: "When can SparkStack pay real crypto?",
+    choices: [
+      "As soon as the website exists",
+      "Only after approved ads actually pay the owner",
+      "When someone forwards coins to the owner’s wallet",
+    ],
+    answer: 1,
+    why: "The coins have to come from ad money. No approval, no visitors, no payout budget.",
+  },
 ];
 
 function renderLessons() {

@@ -59,7 +59,7 @@ h2 { margin: 0 0 8px; font-size: 18px; }
 
 .tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 6px;
   margin: 16px 0;
 }
@@ -68,8 +68,9 @@ h2 { margin: 0 0 8px; font-size: 18px; }
   color: var(--muted);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 10px 0;
+  padding: 10px 2px;
   font-weight: 600;
+  font-size: 12px;
 }
 .tab.on {
   color: var(--bg);
