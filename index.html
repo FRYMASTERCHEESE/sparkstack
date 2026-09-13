@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Harbor — Wallet</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="brand-name">Harbor</div>
+          <button class="network-pill" id="networkBtn" type="button">Solana</button>
+        </div>
+      </div>
+      <button class="btn connect" id="connectBtn" type="button">Connect</button>
+    </header>
+    <div class="wallet-sheet hidden" id="walletSheet">
+      <div class="card">
+        <p class="muted">Connect a wallet</p>
+        <p class="hint">Phone Chrome has no wallet inside it. Open Harbor in a wallet app, or use a desktop extension.</p>
+        <button class="btn primary wide" id="openPhantom" type="button">Open in Phantom</button>
+        <button class="btn wide" id="openSolflare" type="button">Open in Solflare</button>
+        <button class="btn wide" id="openBackpack" type="button">Open in Backpack</button>
+        <button class="btn wide" id="retryInject" type="button">I already have an extension</button>
+        <button class="btn wide" id="closeSheet" type="button">Close</button>
+      </div>
+    </div>
+
+    <main class="screen" id="screen-home">
+      <section class="balance-card">
+        <p class="muted">Total balance</p>
+        <h1 id="totalBalance">…</h1>
+        <p class="delta" id="balanceDelta">Loading live prices…</p>
+        <div class="actions four">
+          <button class="btn primary" data-go="send">Send</button>
+          <button class="btn" data-go="receive">Receive</button>
+          <button class="btn" data-go="swap">Swap</button>
+          <button class="btn" data-go="create">Create</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="row-head">
+          <h2>Tokens</h2>
+          <span class="muted">Solana</span>
+        </div>
+        <ul class="list" id="tokenList"></ul>
+      </section>
+    </main>
+
+    <main class="screen hidden" id="screen-send">
+      <h2>Send / gift</h2>
+      <p class="hint">Pay or give tokens to any Solana address. They receive in their own wallet.</p>
+      <label>Asset
+        <select id="sendAsset">
+          <option>SOL</option>
+          <option>USDC</option>
+          <option>JUP</option>
+        </select>
+      </label>
+      <label>To (wallet address)
+        <input id="sendTo" placeholder="Recipient Solana address" autocomplete="off" />
+      </label>
+      <label>Amount
+        <input id="sendAmt" inputmode="decimal" placeholder="0.00" />
+      </label>
+      <label>Note (optional, off-chain)
+        <input id="sendNote" placeholder="Thanks / gift" maxlength="80" />
+      </label>
+      <p class="hint" id="sendHint">You sign in your browser wallet. Harbor does not custody or “give away” other people’s funds.</p>
+      <button class="btn primary wide" id="sendSubmit">Sign send in wallet</button>
+    </main>
+
+    <main class="screen hidden" id="screen-receive">
+      <h2>Receive</h2>
+      <div class="qr-box">
+        <div class="qr-fake">HB</div>
+        <p class="mono" id="recvAddr">Connect a wallet first</p>
+        <button class="btn wide" id="copyAddr">Copy address</button>
+      </div>
+      <div class="card">
+        <p class="muted">From Coinbase / Binance / Kraken</p>
+        <p class="hint">Withdraw SOL or USDC to the address above. Network must be <strong>Solana</strong>, not Ethereum or Base. Funds go to your wallet, not this website.</p>
+      </div>
+    </main>
+
+    <main class="screen hidden" id="screen-fund">
+      <h2>Add funds</h2>
+      <div class="card">
+        <p class="muted">1. Withdraw from an exchange</p>
+        <p class="hint">Copy your Harbor-connected address on Receive, then in Coinbase: Send → crypto address → pick <strong>Solana</strong>.</p>
+        <a class="btn wide" href="https://www.coinbase.com/assets" target="_blank" rel="noopener">Open Coinbase</a>
+      </div>
+      <div class="card">
+        <p class="muted">2. Buy with a card (licensed on-ramp)</p>
+        <p class="hint">Harbor does not take card numbers. Coinbase and MoonPay run KYC and send crypto to <em>your</em> wallet.</p>
+        <button class="btn primary wide" id="buyCoinbase">Buy on Coinbase</button>
+        <button class="btn wide" id="buyMoonpay">Buy on MoonPay</button>
+      </div>
+      <p class="legal">You need a Coinbase or MoonPay account. Partner APIs (session tokens) are required before an in-app widget can pre-fill your address.</p>
+    </main>
+
+    <main class="screen hidden" id="screen-swap">
+      <h2>Swap</h2>
+      <div class="swap-card">
+        <label>You pay
+          <div class="swap-row">
+            <input id="swapFromAmt" inputmode="decimal" placeholder="0.00" value="1" />
+            <select id="swapFrom"><option>SOL</option><option>USDC</option></select>
+          </div>
+        </label>
+        <div class="swap-arrow">↓</div>
+        <label>You receive
+          <div class="swap-row">
+            <input id="swapToAmt" inputmode="decimal" placeholder="0.00" value="186.40" />
+            <select id="swapTo"><option>USDC</option><option>SOL</option></select>
+          </div>
+        </label>
+      </div>
+      <p class="hint" id="swapQuote">Live quote via Jupiter. Nothing is signed or sent.</p>
+      <button class="btn wide" id="quoteBtn">Get live quote</button>
+      <button class="btn primary wide" id="swapSubmit">Sign swap in wallet</button>
+    </main>
+
+    <main class="screen hidden" id="screen-markets">
+      <h2>Markets</h2>
+      <p class="muted" id="marketUpdated">Live Solana prices</p>
+      <ul class="list" id="marketList"></ul>
+      <p class="hint">Solana tokens via Jupiter. Not every chain. New coins appear after they have a mint — paste it below.</p>
+      <label>Add mint <input id="customMint" placeholder="Paste any Solana mint address" /></label>
+      <button class="btn wide" id="addMintBtn" type="button">Add to markets</button>
+      <button class="btn wide" data-go="list" type="button">Token list & apply</button>
+    </main>
+
+    <main class="screen hidden" id="screen-list">
+      <h2>Request listing</h2>
+      <p class="hint">Anyone can apply. Harbor listed only after <em>you</em> accept. Not a government stamp. Not Phantom.</p>
+      <div class="card">
+        <label>Project name <input id="appName" placeholder="Harbor" maxlength="32" /></label>
+        <label>Ticker <input id="appSym" placeholder="HBR" maxlength="10" /></label>
+        <label>Mint address <input id="appMint" placeholder="Solana mint address" /></label>
+        <label>Website <input id="appWeb" placeholder="https://" /></label>
+        <label>Contact <input id="appContact" placeholder="email or telegram" /></label>
+        <label>Why list this? <input id="appWhy" placeholder="Short note" maxlength="160" /></label>
+        <label class="check"><input type="checkbox" id="appHonest" /> I control this mint, I am not copying another brand, and I accept coins can go to zero</label>
+        <button class="btn primary wide" id="applyBtn" type="button">Submit for review</button>
+        <p class="hint" id="applyMsg"></p>
+      </div>
+      <p class="muted">Listed on Harbor</p>
+      <ul class="list" id="listedTokens"></ul>
+      <p class="muted">All applications</p>
+      <ul class="list" id="applyList"></ul>
+      <button class="btn wide" data-go="review" type="button">Reviewer desk</button>
+    </main>
+
+    <main class="screen hidden" id="screen-review">
+      <h2>Reviewer desk</h2>
+      <p class="hint">Unlock on this device, then accept or decline. Decisions stay in this browser until you add a server.</p>
+      <div class="card" id="reviewLock">
+        <label>Reviewer PIN <input id="reviewPin" type="password" placeholder="Set or enter PIN" /></label>
+        <button class="btn primary wide" id="reviewUnlock" type="button">Unlock</button>
+        <p class="hint" id="reviewLockMsg"></p>
+      </div>
+      <div id="reviewDesk" class="hidden">
+        <ul class="list" id="reviewQueue"></ul>
+        <button class="btn wide" id="reviewExport" type="button">Copy decisions as JSON</button>
+        <p class="hint" id="reviewMsg"></p>
+      </div>
+    </main>
+
+    <main class="screen hidden" id="screen-create">
+      <h2>Create a coin</h2>
+      <p class="hint">Solana <strong>mainnet</strong>. Your wallet pays rent and any Harbor fee. Name/symbol are labels only until you add Metaplex metadata.</p>
+      <label>Name <input id="tokName" value="Harbor" maxlength="32" /></label>
+      <label>Symbol <input id="tokSym" value="HBR" maxlength="10" /></label>
+      <label>Decimals
+        <select id="tokDec"><option>9</option><option selected>6</option><option>0</option></select>
+      </label>
+      <label>Initial supply <input id="tokSupply" inputmode="numeric" value="1000000000" /></label>
+      <div class="card">
+        <p class="muted">Risk disclaimer</p>
+        <p class="hint">Most new coins go to zero. You can lose all money you put in. This is not financial advice, not a job, and not an earning scheme. Harbor listed is only a metadata review. There is no guaranteed market, price, or cash-out. Not affiliated with Phantom.</p>
+        <label class="check"><input type="checkbox" id="tokRisk" /> I understand this is high risk and I may lose everything</label>
+      </div>
+      <button class="btn primary wide" id="createBtn">Mint on mainnet</button>
+      <p class="hint" id="createMsg"></p>
+      <pre class="code" id="createOut"></pre>
+    </main>
+
+    <main class="screen hidden" id="screen-activity">
+      <h2>Activity</h2>
+      <ul class="list" id="activityList"></ul>
+    </main>
+
+    <main class="screen hidden" id="screen-settings">
+      <h2>Settings</h2>
+      <div class="card">
+        <p class="muted">Networks</p>
+        <label class="check"><input type="checkbox" checked disabled /> Solana (primary)</label>
+        <label class="check"><input type="checkbox" id="evmToggle" /> Ethereum + Base (placeholder)</label>
+      </div>
+      <div class="card">
+        <p class="muted">Security</p>
+        <p>Keys stay on-device. Harbor never asks for a seed phrase on a website.</p>
+      </div>
+      <div class="card">
+        <p class="muted">Mainnet creation fee (optional)</p>
+        <p class="hint">Leave blank for rent only. Fee is sent to this address when someone mints.</p>
+        <label>Your SOL address <input id="feeAddr" placeholder="Your Solana address" /></label>
+        <label>Fee in SOL <input id="feeAmt" inputmode="decimal" placeholder="0.01" value="0.01" /></label>
+      </div>
+      <button class="btn wide" data-go="create" type="button">Harbor token (HBR)</button>
+      <button class="btn wide" data-go="list" type="button">Token list</button>
+      <button class="btn wide" data-go="review" type="button">Reviewer desk</button>
+      <p class="legal">Harbor is an independent demo. Not Phantom, not a bank, not custodial.</p>
+    </main>
+
+    <nav class="tabbar">
+      <button class="tab active" data-go="home">Home</button>
+      <button class="tab" data-go="swap">Swap</button>
+      <button class="tab" data-go="markets">Markets</button>
+      <button class="tab" data-go="create">Create</button>
+      <button class="tab" data-go="settings">Settings</button>
+    </nav>
+  </div>
+  <script src="https://unpkg.com/@solana/web3.js@1.98.4/lib/index.iife.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
